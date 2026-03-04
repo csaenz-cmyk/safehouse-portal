@@ -5480,11 +5480,24 @@ function closeEmailConfig() {
   const modal = document.getElementById('emailConfigModal');
   if (modal) modal.style.display = 'none';
 }
+// Lead notification template ID
+const EJ_LEAD_TEMPLATE_ID = 'template_ct3jiec';
+
 function loadEmailConfigUI() {
   try {
     const cfg = JSON.parse(localStorage.getItem('shi_email_config') || '{}');
-    const flds = ['ejServiceId','ejTemplateId','ejPublicKey','notifEmail'];
-    flds.forEach(id => { const el = document.getElementById(id); if(el && cfg[id]) el.value = cfg[id]; });
+    // Pre-fill with our known credentials if not set
+    const defaults = {
+      ejServiceId:  EJ_SERVICE_ID,
+      ejTemplateId: EJ_LEAD_TEMPLATE_ID,
+      ejPublicKey:  EJ_PUBLIC_KEY,
+      notifEmail:   cfg.notifEmail || ''
+    };
+    const merged = {...defaults, ...cfg};
+    ['ejServiceId','ejTemplateId','ejPublicKey','notifEmail'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = merged[id] || '';
+    });
   } catch(e) {}
 }
 function saveEmailConfig() {
@@ -5493,7 +5506,8 @@ function saveEmailConfig() {
     const el = document.getElementById(id); if(el) cfg[id] = el.value.trim();
   });
   localStorage.setItem('shi_email_config', JSON.stringify(cfg));
-  alert('✅ Email config saved!');
+  const btn = document.querySelector('[onclick="saveEmailConfig()"]');
+  if (btn) { const orig = btn.textContent; btn.textContent = '✅ Saved!'; setTimeout(()=>btn.textContent=orig, 2000); }
   closeEmailConfig();
 }
 function updateEmailStatusBanner() {}
@@ -5938,19 +5952,35 @@ function buildTextReport(lead) {
 }
 
 // ── EMAIL NOTIFICATION ───────────────────────────────────────────
-function sendEmailNotification(lead) {
+async function sendEmailNotification(lead) {
   try {
-    const cfg = JSON.parse(localStorage.getItem('shi_email_config') || '{}');
-    if (!cfg.ejServiceId || !cfg.ejTemplateId || !cfg.ejPublicKey) return; // not configured
     if (typeof emailjs === 'undefined') return;
-    emailjs.send(cfg.ejServiceId, cfg.ejTemplateId, {
-      client_name:  lead.clientName || '—',
-      client_phone: lead.clientPhone || '—',
-      client_email: lead.clientEmail || '—',
-      request_type: lead.insuranceType || lead.requestType || '—',
-      lead_id:      lead.id,
-      to_email:     cfg.notifEmail || '',
-    }, cfg.ejPublicKey).catch(() => {});
+    // Get all active agents from Supabase
+    const res = await sbFetch('/rest/v1/agents?is_active=eq.true&select=email', {
+      headers: { 'Prefer': 'return=representation' }
+    });
+    if (!res.ok) return;
+    const agents = await res.json();
+    if (!agents.length) return;
+
+    const params = {
+      client_name:    lead.clientName    || '—',
+      client_phone:   lead.clientPhone   || '—',
+      client_email:   lead.clientEmail   || '—',
+      request_type:   lead.insuranceType || lead.requestType || '—',
+      insurance_type: lead.insuranceType || '—',
+      notes:          lead.notes         || '—',
+      agent_name:     lead.createdBy     || 'Agent',
+      submitted_at:   new Date(lead.timestamp).toLocaleString('en-US'),
+    };
+
+    // Send to each active agent
+    for (const agent of agents) {
+      emailjs.send(EJ_SERVICE_ID, EJ_LEAD_TEMPLATE_ID, {
+        ...params,
+        notify_email: agent.email,
+      }).catch(() => {});
+    }
   } catch(e) {}
 }
 
