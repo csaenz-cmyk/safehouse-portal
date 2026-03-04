@@ -4298,7 +4298,7 @@ let _otpPendingAgent = null; // agent object waiting for OTP confirmation
 // EmailJS config
 const EJ_SERVICE_ID  = 'service_16i539f';
 const EJ_TEMPLATE_ID = 'template_rdh9nbj';
-const EJ_PUBLIC_KEY  = 'pJlOKLEHwLxtz2hwR442b';
+const EJ_PUBLIC_KEY  = 'goIb-30IEr6GJrK0n';
 
 // SHA-256 helper (browser native)
 async function sha256hex(str) {
@@ -4365,7 +4365,6 @@ async function employeeLogin() {
     });
 
     // Send OTP via EmailJS
-    emailjs.init(EJ_PUBLIC_KEY);
     await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_ID, {
       agent_name:  agent.name,
       agent_email: agent.email,
@@ -4449,7 +4448,6 @@ async function resendOTP() {
     method: 'POST',
     body: JSON.stringify({ agent_id: _otpPendingAgent.id, code: otp, expires_at: expiresAt, used: false })
   });
-  emailjs.init(EJ_PUBLIC_KEY);
   await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_ID, {
     agent_name: _otpPendingAgent.name, agent_email: _otpPendingAgent.email, otp_code: otp
   });
@@ -6882,6 +6880,8 @@ function closeScriptEditor() {
 }
 
 window.addEventListener('load', function() {
+  // Initialize EmailJS once
+  try { emailjs.init('goIb-30IEr6GJrK0n'); } catch(e) {}
   updateHoursBanner();
   try { renderAgentNoticeBanner(); } catch(e) {}
 });
