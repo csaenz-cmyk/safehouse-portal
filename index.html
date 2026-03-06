@@ -5416,7 +5416,7 @@ function closeLeadDetail() {
 }
 
 // ── LEAD STATUS UPDATE ────────────────────────────────────────────
-function updateLeadStatus(leadId, newStatus) {
+async function updateLeadStatus(leadId, newStatus) {
   const meta = getLeadMeta();
   if (!meta[leadId]) meta[leadId] = {};
   const oldStatus = meta[leadId].status || 'new';
@@ -5424,12 +5424,16 @@ function updateLeadStatus(leadId, newStatus) {
   meta[leadId].contactedBy = currentEmployee?.name || 'Agent';
   meta[leadId].contactedAt = new Date().toISOString();
   saveLeadMeta(meta);
-  // Also update in leads array
+  // Update in-memory array
   const lead = leads.find(l => l.id === leadId);
-  if (lead) {
-    lead.status = newStatus;
-    try { localStorage.setItem('shi_leads', JSON.stringify(leads)); } catch(e) {}
-  }
+  if (lead) { lead.status = newStatus; lead.contactedBy = currentEmployee?.name || 'Agent'; }
+  // Save to Supabase
+  try {
+    await sbFetch('/rest/v1/leads?id=eq.' + leadId, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: newStatus, contacted_by: currentEmployee?.name || 'Agent' })
+    });
+  } catch(e) {}
   logActivity('status_change', leadId, lead?.clientName, `Status changed: ${oldStatus} → ${newStatus} by ${currentEmployee?.name||'Agent'}`);
   renderAdminDashboard();
 }
@@ -5541,7 +5545,7 @@ function closeNoteModal() {
   const modal = document.getElementById('noteModal');
   if (modal) modal.style.display = 'none';
 }
-function saveNote() {
+async function saveNote() {
   const modal = document.getElementById('noteModal');
   if (!modal) return;
   const leadId = modal.dataset.leadId;
@@ -5553,6 +5557,13 @@ function saveNote() {
   saveLeadMeta(meta);
   const lead = leads.find(l => l.id === leadId);
   if (lead) { lead.agentNote = note; lead.noteBy = meta[leadId].noteBy; }
+  // Save to Supabase
+  try {
+    await sbFetch('/rest/v1/leads?id=eq.' + leadId, {
+      method: 'PATCH',
+      body: JSON.stringify({ agent_note: note })
+    });
+  } catch(e) {}
   logActivity('note', leadId, modal.dataset.clientName, `Note updated by ${currentEmployee?.name||'Agent'}: ${note.slice(0,60)}${note.length>60?'…':''}`);
   closeNoteModal();
   renderAdminDashboard();
