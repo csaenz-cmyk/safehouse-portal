@@ -4215,78 +4215,85 @@ async function sbFetch(path, options={}) {
 }
 
 async function saveLeadToStorage(lead) {
-  // localStorage already saved in submitLead — just sync to Supabase
+  // Save to Supabase as source of truth
   try {
     await sbFetch('/rest/v1/leads', {
       method: 'POST',
       body: JSON.stringify({
-        id: lead.id, client_name: lead.clientName||'', client_phone: lead.clientPhone||'',
-        client_email: lead.clientEmail||'', request_type: lead.requestType||'',
-        insurance_type: lead.insuranceType||'', hear_about: lead.hearAbout||'',
-        callback_time: lead.callbackTime||'', notes: lead.notes||'',
-        submitted_at: lead.timestamp||new Date().toISOString(),
-        created_by: lead.createdBy||'Agent', status: 'new',
+        id: lead.id,
+        client_name:    lead.clientName   || '',
+        client_phone:   lead.clientPhone  || '',
+        client_email:   lead.clientEmail  || '',
+        request_type:   lead.requestType  || '',
+        insurance_type: lead.insuranceType|| '',
+        hear_about:     lead.hearAbout    || '',
+        callback_time:  lead.callbackTime || '',
+        notes:          lead.notes        || '',
+        submitted_at:   lead.timestamp    || new Date().toISOString(),
+        created_by:     lead.createdBy    || 'Agent',
+        agent_id:       lead.createdById  || null,
+        ref_number:     lead.id,
+        status:         'new',
+        data:           lead.details      || {},
       })
     });
-  } catch(e) { /* Supabase offline — local save is fine */ }
+  } catch(e) { console.error('Supabase save error:', e); }
 }
 
 async function loadAllLeads() {
-  // ── Always read from localStorage first (source of truth) ──
-  const local = JSON.parse(localStorage.getItem('shi_leads')||'[]');
-  const meta  = getLeadMeta();
-
-  // Also sync in-memory leads array with localStorage
-  // (so the array never gets out of sync with storage)
-  try {
-    const stored = JSON.parse(localStorage.getItem('shi_leads')||'[]');
-    leads.length = 0;
-    stored.forEach(l => leads.push(l));
-  } catch(e) {}
-
-  // Merge meta (status/notes) into leads
-  local.forEach(l => {
-    const m = meta[l.id]||{};
-    if (!l.status || l.status==='new') l.status = m.status||'new';
-    l.contactedBy = l.contactedBy||m.contactedBy||'';
-    l.agentNote   = l.agentNote||m.agentNote||'';
-  });
-
-  // Try Supabase silently — ONLY add leads not already in local
-  // Never replace local data with Supabase (local is always authoritative)
+  const meta = getLeadMeta();
+  // ── Supabase is the source of truth ──
   try {
     const res = await Promise.race([
-      sbFetch('/rest/v1/leads?select=*&order=submitted_at.desc', {headers:{'Prefer':'return=representation'}}),
-      new Promise((_,r) => setTimeout(()=>r(new Error('timeout')), 2000))
+      sbFetch('/rest/v1/leads?select=*&order=submitted_at.desc', { headers:{'Prefer':'return=representation'} }),
+      new Promise((_,r) => setTimeout(()=>r(new Error('timeout')), 4000))
     ]);
     if (res && res.ok) {
       const remoteData = await res.json();
-      if (Array.isArray(remoteData) && remoteData.length > 0) {
-        const localIds = new Set(local.map(l => l.id));
+      if (Array.isArray(remoteData)) {
         const remoteLeads = remoteData.map(r => ({
-          id: r.id, timestamp: r.submitted_at, clientName: r.client_name, clientPhone: r.client_phone,
-          clientEmail: r.client_email, requestType: r.request_type, insuranceType: r.insurance_type,
-          hearAbout: r.hear_about, callbackTime: r.callback_time, notes: r.notes,
-          createdBy: r.created_by||'', status: r.status||'new',
-          contactedBy: r.contacted_by||'', agentNote: r.agent_note||'',
+          id:            r.id,
+          timestamp:     r.submitted_at,
+          clientName:    r.client_name   || '',
+          clientPhone:   r.client_phone  || '',
+          clientEmail:   r.client_email  || '',
+          requestType:   r.request_type  || '',
+          insuranceType: r.insurance_type|| '',
+          hearAbout:     r.hear_about    || '',
+          callbackTime:  r.callback_time || '',
+          notes:         r.notes         || '',
+          createdBy:     r.created_by    || '',
+          status:        r.status        || 'new',
+          contactedBy:   r.contacted_by  || '',
+          agentNote:     r.agent_note    || '',
+          details:       r.data          || {},
         }));
-        // Merge: keep all local leads, add any remote-only leads
-        const merged = [...local];
-        remoteLeads.forEach(r => { if (!localIds.has(r.id)) merged.push(r); });
-        // Apply meta to merged
-        merged.forEach(l => {
+        // Apply local meta overrides (status changes, notes)
+        remoteLeads.forEach(l => {
           const m = meta[l.id]||{};
-          if (!l.status || l.status==='new') l.status = m.status||'new';
-          l.contactedBy = l.contactedBy||m.contactedBy||'';
-          l.agentNote   = l.agentNote||m.agentNote||'';
+          if (m.status) l.status = m.status;
+          if (m.contactedBy) l.contactedBy = m.contactedBy;
+          if (m.agentNote)   l.agentNote   = m.agentNote;
         });
-        // Save merged back to localStorage so nothing is lost
-        try { localStorage.setItem('shi_leads', JSON.stringify(merged)); } catch(e) {}
-        return merged.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        // Keep localStorage in sync
+        try { localStorage.setItem('shi_leads', JSON.stringify(remoteLeads)); } catch(e) {}
+        leads.length = 0;
+        remoteLeads.forEach(l => leads.push(l));
+        return remoteLeads.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
       }
     }
-  } catch(e) { /* offline or timeout — localStorage is fine */ }
+  } catch(e) { console.warn('Supabase timeout — falling back to localStorage'); }
 
+  // Fallback to localStorage if Supabase is unreachable
+  const local = JSON.parse(localStorage.getItem('shi_leads')||'[]');
+  local.forEach(l => {
+    const m = meta[l.id]||{};
+    if (m.status) l.status = m.status;
+    if (m.contactedBy) l.contactedBy = m.contactedBy;
+    if (m.agentNote)   l.agentNote   = m.agentNote;
+  });
+  leads.length = 0;
+  local.forEach(l => leads.push(l));
   return local.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
 }
 
