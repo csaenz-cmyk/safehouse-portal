@@ -421,8 +421,65 @@ body {
 </style>
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<style>
+.ca-stat{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 1px 4px rgba(0,0,0,.07);border:1px solid #E5E7EB;flex:1;min-width:130px}
+.ca-stat-label{font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em}
+.ca-stat-val{font-size:24px;font-weight:800;margin-top:4px}
+.ca-filters{background:#fff;border-radius:11px;padding:12px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);border:1px solid #E5E7EB;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.ca-fsel{border:1px solid #E5E7EB;border-radius:7px;padding:6px 10px;font-size:12px;font-family:'Inter',sans-serif;color:#111827;background:#fff;outline:none}
+.ca-fsel:focus{border-color:#2563EB}
+.ca-table-wrap{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);border:1px solid #E5E7EB;overflow:hidden;margin-bottom:16px}
+.ca-table-head{padding:13px 18px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between}
+.ca-tbl{width:100%;border-collapse:collapse}
+.ca-tbl thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;background:#FAFAFA;border-bottom:1px solid #E5E7EB}
+.ca-tbl tbody tr{border-bottom:1px solid #F3F4F6;transition:background .1s}
+.ca-tbl tbody tr:last-child{border-bottom:none}
+.ca-tbl tbody tr:hover{background:#F8FAFF}
+.ca-tbl td{padding:10px 13px;vertical-align:middle;font-size:13px}
+.ca-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.ca-badge::before{content:'';width:5px;height:5px;border-radius:50%}
+.cb-answered{background:#DCFCE7;color:#16A34A}.cb-answered::before{background:#16A34A}
+.cb-noanswer{background:#FEE2E2;color:#DC2626}.cb-noanswer::before{background:#DC2626}
+.cb-voicemail{background:#FEF9C3;color:#CA8A04}.cb-voicemail::before{background:#CA8A04}
+.cb-busy{background:#F3F4F6;color:#6B7280}.cb-busy::before{background:#9CA3AF}
+.cb-calling{background:#DBEAFE;color:#1D4ED8;animation:blink .8s infinite}.cb-calling::before{background:#2563EB}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.cb-closed{background:#1F2937;color:#9CA3AF;border:1px solid #374151;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700}
+.ca-mono{font-family:'Courier New',monospace;font-size:11px;color:#6B7280}
+.ca-locked-row{opacity:.55;background:#F9FAFB!important}
+.ca-play-btn{width:24px;height:24px;border-radius:50%;background:#0F172A;color:#fff;border:none;cursor:pointer;font-size:9px;display:grid;place-items:center}
+.ca-play-btn:hover{background:#2563EB}
+.ca-play-btn:disabled{background:#D1D5DB;cursor:default}
+.ca-panel{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.07);border:1px solid #E5E7EB}
+.ca-rank-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F3F4F6}
+.ca-rank-row:last-child{border-bottom:none}
+.ca-bar{flex:1;height:5px;background:#F3F4F6;border-radius:3px;margin-top:5px}
+.ca-bar-fill{height:5px;border-radius:3px}
+.ca-hm-grid{display:grid;grid-template-columns:36px repeat(10,1fr);gap:2px;font-size:9px}
+.ca-hm-label{color:#9CA3AF;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:flex-end;padding-right:4px}
+.ca-hm-cell{height:24px;border-radius:3px;display:grid;place-items:center;font-size:8px;font-weight:700;color:#fff;cursor:default}
+.ca-hm-0{background:#F3F4F6;color:#D1D5DB}
+.ca-hm-1{background:#BFDBFE;color:#1E40AF}
+.ca-hm-2{background:#60A5FA;color:#fff}
+.ca-hm-3{background:#2563EB;color:#fff}
+.ca-hm-4{background:#1D4ED8;color:#fff}
+.ca-hm-5{background:#1E3A8A;color:#fff}
+.ca-note-area{width:100%;border:1px solid #E5E7EB;border-radius:6px;padding:6px 9px;font-size:11px;font-family:'Inter',sans-serif;resize:none;outline:none;background:#FAFAFA}
+.ca-note-area:focus{border-color:#2563EB;background:#fff}
+.ca-note-ts{font-size:9px;color:#9CA3AF;font-family:'Courier New',monospace;margin-top:3px}
+.ca-priority-card{border:1px solid #E5E7EB;border-radius:9px;padding:11px 14px;display:flex;align-items:center;gap:11px;margin-bottom:8px;background:#FAFAFA;cursor:pointer;transition:all .15s}
+.ca-priority-card:hover{background:#EFF6FF;border-color:#BFDBFE}
+.ca-locked-card{border:1px solid #374151;background:#1F2937;border-radius:9px;padding:9px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px;opacity:.65}
+.ca-btn-call{background:#16A34A;color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.ca-btn-skip{background:#F9FAFB;color:#374151;border:1px solid #E5E7EB;border-radius:7px;padding:6px 11px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif}
+.ca-sync-btn{display:flex;align-items:center;gap:6px;background:#0F172A;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.ca-sync-btn:disabled{background:#6B7280;cursor:default}
+.ca-section-title{font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 8px}
+</style>
 </head>
 <body>
+
 
 <!-- TOP BAR -->
 <div class="topbar">
@@ -441,6 +498,7 @@ body {
   <div class="nav-tab active" onclick="showMain('form')" id="tab-form" data-en="New Call" data-es="Nueva Llamada">New Call</div>
   <div class="nav-tab" onclick="showMain('dashboard')" id="tab-dash" data-en="Dashboard" data-es="Panel">Dashboard</div>
   <div class="nav-tab" onclick="showMain('qa')" id="tab-qa" data-en="Q&amp;A Guide" data-es="Guía Q&amp;A">Q&amp;A Guide</div>
+  <div class="nav-tab" onclick="showMain('calls')" id="tab-calls" style="display:none">📞 Call Activity</div>
   <div class="nav-tab" onclick="showAdminLogin()" id="tab-admin" style="margin-left:auto;background:rgba(255,255,255,0.10);border-radius:8px 8px 0 0;color:rgba(255,255,255,.9);">🔐 Admin</div>
 </div>
 
@@ -2697,6 +2755,8 @@ body {
 .qa-cat-label{display:inline-block;border-radius:12px;padding:2px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
 .qa-cat-general{background:#EEF2FF;color:#1E3A5F;}
 .qa-cat-auto{background:#E6F7F9;color:#0EA5E9;}
+
+
 .qa-cat-payment{background:#FFF9E6;color:#F59E0B;}
 .qa-cat-changes{background:#EAF7EE;color:#10B981;}
 .qa-cat-cancel{background:#FFF0F0;color:#EF4444;}
@@ -2706,6 +2766,108 @@ body {
 .qa-cat-trust{background:#E8F8FF;color:#006688;}
 .qa-empty{text-align:center;padding:40px;color:#6B7280;}
 </style>
+
+<!-- ══════════════════════════════════════ CALL ACTIVITY ═══ -->
+<div class="main-content" id="main-calls">
+<div class="container" style="max-width:1200px;padding:24px 16px;">
+
+
+
+
+
+<!-- PAGE -->
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+  <div>
+    <div style="font-size:21px;font-weight:800">📞 Call Activity</div>
+    <div style="font-size:13px;color:#6B7280;margin-top:3px" id="caSubtitle">Llamadas salientes · RingCentral</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span id="rcSyncMsg" style="font-size:12px;color:#16A34A;font-weight:600"></span>
+    <button class="ca-sync-btn" id="rcSyncBtn" onclick="syncRingCentral(true)">🔄 Sync RingCentral</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+  <div class="ca-stat"><div class="ca-stat-label">Total Calls</div><div class="ca-stat-val" id="caStat1" style="color:#2563EB">—</div></div>
+  <div class="ca-stat"><div class="ca-stat-label">Contestadas</div><div class="ca-stat-val" id="caStat2" style="color:#16A34A">—</div></div>
+  <div class="ca-stat"><div class="ca-stat-label">No Answer</div><div class="ca-stat-val" id="caStat3" style="color:#DC2626">—</div></div>
+  <div class="ca-stat"><div class="ca-stat-label">Voicemail</div><div class="ca-stat-val" id="caStat4" style="color:#CA8A04">—</div></div>
+  <div class="ca-stat"><div class="ca-stat-label">Tasa Contacto</div><div class="ca-stat-val" id="caStat5" style="color:#7C3AED">—</div></div>
+</div>
+
+<!-- TWO COLUMN: QUEUE + RANKING -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+  <div class="ca-panel">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">🎯 Cola de Llamadas Pendientes</div>
+    <div id="caQueue"><div style="color:#9CA3AF;font-size:12px;padding:10px">Cargando...</div></div>
+  </div>
+  <div class="ca-panel" id="caRankingPanel">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">🏆 Ranking — Tasa de Contacto</div>
+    <div id="caRanking"><div style="color:#9CA3AF;font-size:12px;padding:10px">Sync para ver ranking</div></div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="ca-filters">
+  <span style="font-size:11px;font-weight:700;color:#6B7280">Filtrar:</span>
+  <select class="ca-fsel" id="caFilterAgent" onchange="renderCallActivity()">
+    <option value="all">Todos los agentes</option>
+    <option>Christian Saenz</option>
+    <option>Jennifer Fierro</option>
+    <option>Marina Contreras</option>
+  </select>
+  <select class="ca-fsel" id="caFilterStatus" onchange="renderCallActivity()">
+    <option value="all">Todos los estados</option>
+    <option value="answered">✅ Contestada</option>
+    <option value="no_answer">❌ No Answer</option>
+    <option value="voicemail">📭 Voicemail</option>
+    <option value="busy">⏸ Busy</option>
+  </select>
+  <select class="ca-fsel" id="caFilterDate" onchange="caDateFilterChange()">
+    <option value="all">Todo el tiempo</option>
+    <option value="today">Hoy</option>
+    <option value="yesterday">Ayer</option>
+    <option value="week">Esta semana</option>
+    <option value="month">Este mes</option>
+    <option value="last_month">Mes pasado</option>
+    <option value="custom">📅 Personalizado...</option>
+  </select>
+  <div id="caCustomDateWrap" style="display:none;gap:6px;align-items:center;">
+    <input type="date" id="caDateFrom" class="ca-fsel" onchange="renderCallActivity()" style="width:130px">
+    <span style="font-size:12px;color:#6B7280">—</span>
+    <input type="date" id="caDateTo" class="ca-fsel" onchange="renderCallActivity()" style="width:130px">
+  </div>
+  <input id="caSearch" type="text" class="ca-fsel" placeholder="🔍 Cliente o número..." oninput="renderCallActivity()" style="width:170px">
+</div>
+
+<!-- TABLE -->
+<div class="ca-table-wrap">
+  <div class="ca-table-head">
+    <span style="font-weight:700;font-size:13px">📋 Llamadas Salientes</span>
+    <span style="font-size:11px;color:#6B7280">Solo outbound · Auto-sync con RingCentral</span>
+  </div>
+  <table class="ca-tbl">
+    <thead>
+      <tr id="caTableHead">
+        <th>Fecha / Hora</th>
+        <th>Cliente</th>
+        <th>Agente</th>
+        <th>Estado</th>
+        <th>Duración</th>
+        <th id="caColRec" style="display:none">🎙 Grab.</th>
+        <th>Lead</th>
+      </tr>
+    </thead>
+    <tbody id="caTableBody">
+      <tr><td colspan="7" style="text-align:center;padding:30px;color:#9CA3AF">Haz clic en "Sync RingCentral" para cargar llamadas.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</div><!-- /main-calls -->
+
 
 
 
@@ -3350,6 +3512,19 @@ function showMain(tab) {
   }
   if (tab === 'form') {
     document.getElementById('formContainer').style.display = 'block';
+  }
+  if (tab === 'calls') {
+    const isAdmin = currentEmployee?.role === 'admin';
+    const rcPanel = document.getElementById('caRankingPanel');
+    const rcCol = document.getElementById('caColRec');
+    if (rcPanel) rcPanel.style.display = isAdmin ? '' : 'none';
+    if (rcCol && isAdmin) rcCol.style.display = '';
+    renderCallActivity();
+    // Auto-sync on first open if no data
+    if (!callsData.length) syncRingCentral(false);
+    // Auto-refresh every 5 min
+    if (callsSyncInterval) clearInterval(callsSyncInterval);
+    callsSyncInterval = setInterval(() => syncRingCentral(false), 5 * 60 * 1000);
   }
 }
 
@@ -4138,42 +4313,189 @@ function showSummary() {
 
   // ── HOME ─────────────────────────────────────────────────────────
   else if (itype === 'home') {
-    html += `<div class="summary-section"><h3>🏠 Home Quote</h3>
-      ${sr('Heard About Us',   previewDetails.hearAbout)}
-      ${sr('Property Address', previewDetails.address)}
-      ${sr('Type',             previewDetails.propType)}
-      ${sr('Year Built',       previewDetails.yearBuilt)}
-      ${sr('Sq Ft',            previewDetails.sqft)}
-      ${sr('Roof Type',        previewDetails.roofType)}
-      ${sr('Roof Year',        previewDetails.roofYear)}
+    html += `<div class="summary-section"><h3>🏠 Home Quote — Owner Info</h3>
+      ${sr('Heard About Us',  previewDetails.hearAbout)}
+      ${sr('Owner Name',      previewDetails.ownerName)}
+      ${sr('Date of Birth',   previewDetails.ownerDOB)}
+      ${sr('Marital Status',  previewDetails.maritalStatus)}
+    </div>`;
+    html += `<div class="summary-section"><h3>🏡 Property Info</h3>
+      ${sr('Property Address',  previewDetails.address)}
+      ${sr('Type',              previewDetails.propType)}
+      ${sr('Property Use',      previewDetails.propUse)}
+      ${sr('Construction',      previewDetails.constructType)}
+      ${sr('Year Built',        previewDetails.yearBuilt)}
+      ${sr('Sq Ft',             previewDetails.sqft)}
+      ${sr('Bedrooms',          previewDetails.bedrooms)}
+      ${sr('Bathrooms',         previewDetails.bathrooms)}
+      ${sr('Stories',           previewDetails.stories)}
+      ${sr('Garage',            previewDetails.garage)}
+      ${sr('Roof Material',     previewDetails.roofType)}
+      ${sr('Roof Year',         previewDetails.roofYear)}
+      ${sr('Mortgage Lender',   previewDetails.mortgageLender)}
+    </div>`;
+    html += `<div class="summary-section"><h3>🔧 Systems & Details</h3>
+      ${sr('Electrical Updated', previewDetails.electricalUpd)}
+      ${sr('Plumbing Updated',   previewDetails.plumbingUpd)}
+      ${sr('Fireplace',          previewDetails.fireplace)}
+      ${sr('Security System',    previewDetails.securitySys)}
+      ${sr('Vacant Property',    previewDetails.vacant)}
+      ${sr('Roommates/Tenants',  previewDetails.roommates)}
+      ${sr('Trampoline',         previewDetails.trampoline)}
+      ${sr('Swimming Pool',      previewDetails.pool)}
+      ${sr('Dogs',               previewDetails.dogs)}
+      ${previewDetails.dogBreed ? sr('Dogs / Breed', previewDetails.dogBreed) : ''}
+      ${sr('Business in Home',   previewDetails.bizInHome)}
+      ${sr('Airbnb/Short-Term',  previewDetails.airbnb)}
+      ${sr('Flood/Earthquake',   previewDetails.floodEarthq)}
+    </div>`;
+    html += `<div class="summary-section"><h3>📋 Claims & Insurance</h3>
+      ${sr('Claims Last 3 Yrs',  previewDetails.claimsLast3)}
+      ${sr('Prior Loss',         previewDetails.priorLoss)}
+      ${sr('Currently Insured',  previewDetails.currentlyInsured)}
+      ${sr('Current Carrier',    previewDetails.carrier)}
+      ${sr('How Long Insured',   previewDetails.insuredLen)}
     </div>`;
   }
 
   // ── MOTO, RENTERS, BIZ, COMAUTO ──────────────────────────────────
   else if (itype === 'moto') {
-    html += `<div class="summary-section"><h3>🏍️ Motorcycle Quote</h3>
+    html += `<div class="summary-section"><h3>🏍️ Motorcycle Quote — Rider Info</h3>
+      ${sr('Heard About Us',  previewDetails.hearAbout)}
+      ${sr('Date of Birth',   previewDetails.riderDOB)}
+      ${sr('Years Riding',    previewDetails.yearsRiding)}
+      ${sr('ID Type',         previewDetails.idType)}
+      ${sr('ID / License #',  previewDetails.idNum)}
+      ${sr('Issuing State',   previewDetails.idState)}
+      ${sr('MSF Safety Course', previewDetails.msf)}
+    </div>`;
+    html += `<div class="summary-section"><h3>🏍️ Motorcycle Details</h3>
       ${sr('Year/Make/Model', [previewDetails.year,previewDetails.make,previewDetails.model].filter(Boolean).join(' '))}
-      ${sr('Type',     previewDetails.motoType)}
-      ${sr('Coverage', previewDetails.coverage)}
+      ${sr('Type',            previewDetails.motoType)}
+      ${sr('VIN',             previewDetails.vin)}
+      ${sr('Est. Annual Mileage', previewDetails.mileage)}
+    </div>`;
+    html += `<div class="summary-section"><h3>🛡️ Coverage</h3>
+      ${sr('Coverage Type',   previewDetails.coverage)}
+      ${(previewDetails.coverages||[]).length ? sr('Additional Coverage', previewDetails.coverages.join(', ')) : ''}
+      ${sr('Modifications',   previewDetails.modifications)}
+      ${previewDetails.modsDesc ? sr('Mod Details', previewDetails.modsDesc) : ''}
+      ${sr('Currently Insured', previewDetails.currentlyInsured)}
+      ${sr('Current Carrier',   previewDetails.carrier)}
+      ${sr('How Long Insured',  previewDetails.insuredLen)}
     </div>`;
   } else if (itype === 'renters') {
-    html += `<div class="summary-section"><h3>🏢 Renters Quote</h3>
-      ${sr('Address',        previewDetails.address)}
-      ${sr('Property Type',  previewDetails.propType)}
-      ${sr('Property Value', previewDetails.propValue)}
+    html += `<div class="summary-section"><h3>🏢 Renters Quote — Renter Info</h3>
+      ${sr('Heard About Us',   previewDetails.hearAbout)}
+      ${sr('Date of Birth',    previewDetails.dob)}
+      ${sr('Marital Status',   previewDetails.maritalStatus)}
+      ${sr('Occupation',       previewDetails.occupation)}
+      ${sr('# of Occupants',   previewDetails.occupants)}
+    </div>`;
+    html += `<div class="summary-section"><h3>🏠 Property Details</h3>
+      ${sr('Rental Address',   previewDetails.address)}
+      ${sr('Property Type',    previewDetails.propType)}
+      ${sr('Floor',            previewDetails.floor)}
+      ${sr('Property Value',   previewDetails.propValue)}
+      ${sr('Liability',        previewDetails.liability)}
+      ${sr('Security System',  previewDetails.securitySys)}
+      ${sr('High-Value Items', previewDetails.highValueItems)}
+      ${previewDetails.hvDesc ? sr('HV Items Desc', previewDetails.hvDesc) : ''}
+      ${sr('Dogs / Breed',     previewDetails.dogs)}
+      ${sr('Biz in Home',      previewDetails.bizInHome)}
+    </div>`;
+    html += `<div class="summary-section"><h3>📋 Current Insurance</h3>
+      ${sr('Currently Insured', previewDetails.currentlyInsured)}
+      ${sr('Current Carrier',   previewDetails.carrier)}
+      ${sr('How Long Insured',  previewDetails.insuredLen)}
     </div>`;
   } else if (itype === 'biz') {
-    html += `<div class="summary-section"><h3>💼 Business Quote</h3>
-      ${sr('Business Name', previewDetails.bizName)}
-      ${sr('Business Type', previewDetails.bizType)}
-      ${sr('FT Employees',  previewDetails.ftEmployees)}
-      ${sr('PT Employees',  previewDetails.ptEmployees)}
+    html += `<div class="summary-section"><h3>💼 Business Quote — Business Info</h3>
+      ${sr('Heard About Us',    previewDetails.hearAbout)}
+      ${sr('Business Name',     previewDetails.bizName)}
+      ${sr('Business Type',     previewDetails.bizType)}
+      ${sr('Owner Name',        previewDetails.ownerName)}
+      ${sr('Ownership %',       previewDetails.ownership)}
+      ${sr('Yrs in Operation',  previewDetails.yearsInOp)}
+      ${sr('Industry Exp',      previewDetails.expYears)}
+      ${sr('Structure',         previewDetails.structure)}
+      ${sr('FT Employees',      previewDetails.ftEmployees)}
+      ${sr('PT Employees',      previewDetails.ptEmployees)}
+      ${sr('Annual Revenue',    previewDetails.revenue)}
+      ${sr('EIN',               previewDetails.ein)}
+      ${sr('Business Address',  previewDetails.address)}
+      ${sr('Office/Field %',    previewDetails.officeField)}
+    </div>`;
+    html += `<div class="summary-section"><h3>📋 Risk & History</h3>
+      ${sr('Subcontractors',    previewDetails.subcontractors)}
+      ${sr('Bankruptcy',        previewDetails.bankruptcy)}
+      ${sr('Other Businesses',  previewDetails.otherBiz)}
+      ${previewDetails.otherBizName ? sr('Other Biz Name', previewDetails.otherBizName) : ''}
+      ${sr('Large Claims',      previewDetails.bigClaims)}
+      ${previewDetails.bigClaimsDesc ? sr('Claims Desc', previewDetails.bigClaimsDesc) : ''}
+      ${sr('Cancel History',    previewDetails.cancelHistory)}
+      ${previewDetails.cancelDesc ? sr('Cancel Desc', previewDetails.cancelDesc) : ''}
+      ${sr('Operations Outside TX', previewDetails.outsideTX)}
+      ${sr('Gov Contract',      previewDetails.govContract)}
+    </div>`;
+    if ((previewDetails.coverages||[]).length) {
+      html += `<div class="summary-section"><h3>🛡️ Coverage Requested</h3>
+        ${sr('Coverages', previewDetails.coverages.join(', '))}
+        ${previewDetails.coverages.includes('Workers Comp') ? sr('WC Payroll', previewDetails.wcPayroll) : ''}
+        ${previewDetails.coverages.includes('Workers Comp') ? sr('WC Classification', previewDetails.wcClassification) : ''}
+        ${previewDetails.coverages.includes('Workers Comp') ? sr('WC Emp Types', previewDetails.wcEmpTypes) : ''}
+        ${previewDetails.coverages.includes('Workers Comp') ? sr('1099 Subcontractors', previewDetails.wc1099) : ''}
+        ${previewDetails.coverages.includes('Commercial Property') ? sr('Prop Owned/Rented', previewDetails.commPropOwn) : ''}
+        ${previewDetails.coverages.includes('Commercial Property') ? sr('Prop Sq Ft', previewDetails.commPropSqft) : ''}
+        ${previewDetails.coverages.includes('Commercial Property') ? sr('Prop Year Built', previewDetails.commPropYear) : ''}
+      </div>`;
+    }
+    html += `<div class="summary-section"><h3>📋 Current Insurance</h3>
+      ${sr('Current Carrier',   previewDetails.carrier)}
+      ${sr('Expiration',        previewDetails.expiration)}
+      ${sr('Current Premium',   previewDetails.premium)}
     </div>`;
   } else if (itype === 'comauto') {
-    html += `<div class="summary-section"><h3>🚛 Commercial Auto Quote</h3>
-      ${sr('Business', previewDetails.bizName)}
-      ${sr('DOT #',    previewDetails.dotNum)}
-      ${sr('Radius',   previewDetails.radius)}
+    html += `<div class="summary-section"><h3>🚛 Commercial Auto — Business Info</h3>
+      ${sr('Heard About Us',   previewDetails.hearAbout)}
+      ${sr('Business Name',    previewDetails.bizName)}
+      ${sr('Industry',         previewDetails.industry)}
+      ${sr('DOT #',            previewDetails.dotNum)}
+      ${sr('Garage ZIP',       previewDetails.garageZIP)}
+      ${sr('Radius',           previewDetails.radius)}
+      ${sr('Ops Outside TX',   previewDetails.outsideTX)}
+      ${sr('Oil & Gas',        previewDetails.oilGas)}
+      ${(previewDetails.filings||[]).length ? sr('Filings', previewDetails.filings.join(', ')) : ''}
+    </div>`;
+    html += `<div class="summary-section"><h3>🛡️ Coverage</h3>
+      ${sr('Liability Limit',  previewDetails.liability)}
+      ${sr('Physical Damage',  previewDetails.physDamage)}
+      ${sr('Cargo Coverage',   previewDetails.cargo)}
+      ${previewDetails.cargoType ? sr('Cargo Type', previewDetails.cargoType) : ''}
+      ${previewDetails.cargoAvgVal ? sr('Avg Value/Load', previewDetails.cargoAvgVal) : ''}
+      ${previewDetails.cargoMaxVal ? sr('Max Value/Load', previewDetails.cargoMaxVal) : ''}
+      ${previewDetails.hazmat ? sr('Hazmat', previewDetails.hazmat) : ''}
+    </div>`;
+    if ((previewDetails.vehicles||[]).length) {
+      html += `<div class="summary-section"><h3>🚛 Vehicles (${previewDetails.vehicles.length})</h3>`;
+      previewDetails.vehicles.forEach((v,i) => {
+        html += sr(`Vehicle ${i+1}`, [v.year,v.make,v.model,v.vin?'VIN:'+v.vin:'',v.gvw?'GVW:'+v.gvw:'',v.value?'Val:'+v.value:''].filter(Boolean).join(' | '));
+      });
+      html += `</div>`;
+    }
+    if ((previewDetails.drivers||[]).length) {
+      html += `<div class="summary-section"><h3>👤 Drivers (${previewDetails.drivers.length})</h3>`;
+      previewDetails.drivers.forEach((d,i) => {
+        html += sr(`Driver ${i+1}`, [d.name, d.dob?'DOB:'+d.dob:'', d.exp?d.exp+' yrs exp':''].filter(Boolean).join(' | '));
+      });
+      html += `</div>`;
+    }
+    html += `<div class="summary-section"><h3>📋 Current Insurance</h3>
+      ${sr('Currently Insured', previewDetails.currentlyInsured)}
+      ${sr('Current Carrier',   previewDetails.carrier)}
+      ${sr('Expiration',        previewDetails.expiration)}
+      ${sr('Current Premium',   previewDetails.premium)}
+      ${sr('Cancel History',    previewDetails.cancelHistory)}
     </div>`;
   }
 
@@ -4472,7 +4794,7 @@ function employeeLogout() {
   if (passEl)  passEl.value  = '';
   const wb = document.getElementById('userWelcomeBanner');
   if (wb) wb.style.display = 'none';
-  ['manageEmpBtn','clearAllBtn','adminNoticePanel','qaManageBtn'].forEach(id => {
+  ['manageEmpBtn','clearAllBtn','adminNoticePanel','qaManageBtn','tab-calls'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -4518,6 +4840,10 @@ function activateAdmin() {
 
   // ── Show/hide admin header bar ────────────────────────────────
   const ahb = document.getElementById('adminHeaderBar'); if(ahb) ahb.style.display = isAdmin?'flex':'none';
+
+  // ── Show Call Activity tab for all logged-in users ────────────
+  const callsTab = document.getElementById('tab-calls');
+  if (callsTab) callsTab.style.display = '';
 
   // ── Admin-only controls ───────────────────────────────────────
   const mb = document.getElementById('manageEmpBtn');   if(mb) mb.style.display = isAdmin?'block':'none';
@@ -5825,22 +6151,170 @@ function captureAllFormData() {
     }
   }
   else if (selectedQuoteType === 'home') {
-    d.hearAbout=gr('hearAbout'); d.address=g('homePropAddress'); d.propType=g('homeType');
-    d.yearBuilt=g('homeYear'); d.sqft=g('homeSqft'); d.roofType=g('homeRoof'); d.roofYear=g('homeRoofYear');
+    d.hearAbout      = gr('hearAbout');
+    d.ownerName      = g('homeOwnerName');
+    d.ownerDOB       = g('homeOwnerDOB');
+    d.maritalStatus  = g('homeMarital');
+    d.address        = g('homePropAddress');
+    d.propType       = g('homeType');
+    d.propUse        = g('homeUse');
+    d.constructType  = g('homeConstruction');
+    d.yearBuilt      = g('homeYear');
+    d.sqft           = g('homeSqft');
+    d.bedrooms       = g('homeBeds');
+    d.bathrooms      = g('homeBaths');
+    d.stories        = g('homeStories');
+    d.garage         = g('homeGarage');
+    d.roofType       = g('homeRoof');
+    d.roofYear       = g('homeRoofYear');
+    d.mortgageLender = g('homeLender');
+    d.electricalUpd  = gr('homeElec');
+    d.electricalYear = g('homeElecYear');
+    d.plumbingUpd    = gr('homePlumb');
+    d.plumbingYear   = g('homePlumbYear');
+    d.fireplace      = gr('homeFireplace');
+    d.securitySys    = gr('homeSec');
+    d.vacant         = gr('homeVacant');
+    d.roommates      = gr('homeRoommates');
+    d.trampoline     = gr('homeTrampo');
+    d.pool           = gr('homePool');
+    d.dogBreed       = g('homeDogs');
+    d.bizInHome      = gr('homeBiz');
+    d.airbnb         = gr('homeAirbnb');
+    d.floodEarthq    = gr('homeFlood');
+    d.claimsLast3    = gr('homeClaims');
+    d.priorLoss      = gr('homePriorLoss');
+    d.currentlyInsured = gr('homeInsured');
+    d.carrier        = g('homeCarrier');
+    d.insuredLen     = g('homeInsuredLen');
   }
   else if (selectedQuoteType === 'moto') {
-    d.hearAbout=gr('hearAbout'); d.year=g('motoYear'); d.make=g('motoMake');
-    d.model=g('motoModel'); d.motoType=g('motoType'); d.coverage=gr('motoCov');
+    d.hearAbout       = gr('hearAbout');
+    d.riderDOB        = g('motoDOB');
+    d.yearsRiding     = g('motoYears');
+    d.idType          = document.getElementById('motoIdType1')?.value||'';
+    d.idNum           = g('motoIdNum1') || g('motoIdNumOnlyVal1');
+    d.idState         = document.getElementById('motoIdStateVal1')?.value||'';
+    d.msf             = gr('motoMSF');
+    d.year            = g('motoYear');
+    d.make            = g('motoMake');
+    d.model           = g('motoModel');
+    d.motoType        = g('motoType');
+    d.vin             = g('motoVIN');
+    d.mileage         = g('motoMiles');
+    d.coverage        = gr('motoCov');
+    d.coverages       = [...document.querySelectorAll('input[name="motoCovAdd"]:checked')].map(c=>c.value);
+    d.modifications   = gr('motoMods');
+    d.modsDesc        = g('motoModsValue');
+    d.currentlyInsured= gr('motoInsured');
+    d.carrier         = g('motoCarrier');
+    d.insuredLen      = g('motoInsuredLen');
   }
   else if (selectedQuoteType === 'renters') {
-    d.hearAbout=gr('hearAbout'); d.address=g('rentersAddr'); d.propType=g('rentersType'); d.propValue=g('rentersPropVal');
+    d.hearAbout       = gr('hearAbout');
+    d.address         = g('rentersAddr');
+    d.occupants       = g('rentersOcc');
+    d.dob             = g('rentersDOB');
+    d.maritalStatus   = g('rentersMarital');
+    d.occupation      = g('rentersOccupation');
+    d.propType        = g('rentersType');
+    d.floor           = g('rentersFloor');
+    d.propValue       = g('rentersPropVal');
+    d.liability       = gr('rentersLiab');
+    d.securitySys     = gr('rentersSec');
+    d.highValueItems  = gr('rentersHV');
+    d.hvDesc          = g('rentersHVDesc');
+    d.dogs            = g('rentersDogs');
+    d.bizInHome       = gr('rentersBiz');
+    d.currentlyInsured= gr('rentersInsured');
+    d.carrier         = g('rentersCarrier');
+    d.insuredLen      = g('rentersInsuredLen');
   }
   else if (selectedQuoteType === 'biz') {
-    d.hearAbout=gr('hearAbout'); d.bizName=g('bizName'); d.bizType=g('bizType');
-    d.ftEmployees=g('bizFT'); d.ptEmployees=g('bizPT');
+    d.hearAbout       = gr('hearAbout');
+    d.bizName         = g('bizName');
+    d.bizType         = g('bizType');
+    d.ownerName       = g('bizOwner');
+    d.ownership       = g('bizOwnership');
+    d.yearsInOp       = g('bizYears');
+    d.expYears        = g('bizExpYears');
+    d.structure       = g('bizStructure');
+    d.ftEmployees     = g('bizFT');
+    d.ptEmployees     = g('bizPT');
+    d.revenue         = g('bizRevenue');
+    d.ein             = g('bizEIN');
+    d.address         = g('bizAddr');
+    d.officeField     = g('bizOfficeField');
+    d.subcontractors  = gr('bizSub');
+    d.bankruptcy      = gr('bizBankruptcy');
+    d.otherBiz        = gr('bizOtherBiz');
+    d.otherBizName    = g('bizOtherBizName');
+    d.bigClaims       = gr('bizBigClaims');
+    d.bigClaimsDesc   = g('bizBigClaimsDesc');
+    d.cancelHistory   = gr('bizCancel');
+    d.cancelDesc      = g('bizCancelDesc');
+    d.outsideTX       = gr('bizOutTX');
+    d.govContract     = gr('bizGovContract');
+    d.coverages       = [...document.querySelectorAll('input[name="bizCov"]:checked')].map(c=>c.value);
+    d.wcContracts     = gr('wcContracts');
+    d.wcPayroll       = g('wcPayroll');
+    d.wcClassification= g('wcClassification');
+    d.wcEmpTypes      = g('wcEmpTypes');
+    d.wc1099          = gr('wc1099');
+    d.commPropOwn     = gr('commPropOwn');
+    d.commPropSqft    = g('commPropSqft');
+    d.commPropYear    = g('commPropYear');
+    d.commPropConstruct= g('commPropConstruct');
+    d.commPropElec    = gr('commPropElec');
+    d.commPropSprink  = gr('commPropSprink');
+    d.carrier         = g('bizCarrier');
+    d.expiration      = g('bizExpiration');
+    d.premium         = g('bizPremium');
   }
   else if (selectedQuoteType === 'comauto') {
-    d.hearAbout=gr('hearAbout'); d.bizName=g('comBizName'); d.dotNum=g('comDOT'); d.radius=g('comRadius');
+    d.hearAbout       = gr('hearAbout');
+    d.bizName         = g('comBizName');
+    d.industry        = g('comIndustry');
+    d.dotNum          = g('comDOT');
+    d.garageZIP       = g('comGarageZIP');
+    d.radius          = g('comRadius');
+    d.outsideTX       = gr('comOutTX');
+    d.oilGas          = gr('comOilGas');
+    d.filings         = [...document.querySelectorAll('input[name="comFilings"]:checked')].map(c=>c.value);
+    d.liability       = g('comLiability');
+    d.physDamage      = gr('comPhys');
+    d.cargo           = gr('comCargo');
+    d.cargoType       = g('comCargoType');
+    d.cargoAvgVal     = g('comCargoAvgVal');
+    d.cargoMaxVal     = g('comCargoMaxVal');
+    d.hazmat          = gr('comHazmat');
+    d.cargoFilings    = g('comCargoFilings');
+    d.currentlyInsured= gr('comInsured');
+    d.carrier         = g('comCarrier');
+    d.expiration      = g('comExpiration');
+    d.premium         = g('comPremium');
+    d.cancelHistory   = gr('comCancel');
+    // Vehicles
+    d.vehicles = [];
+    document.querySelectorAll('#comVehicles > div').forEach(block => {
+      const inputs = block.querySelectorAll('input[type="text"],input[type="number"]');
+      const sel = block.querySelector('select');
+      if (inputs[0]?.value) d.vehicles.push({
+        year: inputs[0]?.value||'', make: inputs[1]?.value||'', model: inputs[2]?.value||'',
+        vin: inputs[3]?.value||'', gvw: inputs[4]?.value||'', value: inputs[5]?.value||'',
+        use: sel?.value||''
+      });
+    });
+    // Drivers
+    d.drivers = [];
+    let n = 1;
+    while(document.getElementById('comDrvName'+n)) {
+      const nm = document.getElementById('comDrvName'+n)?.value||'';
+      const dob = document.getElementById('comDrvDOB'+n)?.value||'';
+      const exp = document.getElementById('comDrvExp'+n)?.value||'';
+      if (nm||dob) d.drivers.push({name:nm, dob:dob, exp:exp});
+      n++;
+    }
   }
   return d;
 }
@@ -5937,32 +6411,163 @@ function buildTextReport(lead) {
     });
   } else if (itype==='home') {
     lines.push('','── HOME INSURANCE QUOTE ────────────');
-    if (d.address)   lines.push('Address:   '+d.address);
-    if (d.propType)  lines.push('Type:      '+d.propType);
-    if (d.yearBuilt) lines.push('Built:     '+d.yearBuilt);
-    if (d.sqft)      lines.push('Sq Ft:     '+d.sqft);
-    if (d.roofType)  lines.push('Roof:      '+d.roofType+' ('+d.roofYear+')');
+    if (d.hearAbout)      lines.push('Heard About:      '+d.hearAbout);
+    if (d.ownerName)      lines.push('Owner Name:       '+d.ownerName);
+    if (d.ownerDOB)       lines.push('Date of Birth:    '+d.ownerDOB);
+    if (d.maritalStatus)  lines.push('Marital Status:   '+d.maritalStatus);
+    if (d.address)        lines.push('Property Address: '+d.address);
+    if (d.propType)       lines.push('Property Type:    '+d.propType);
+    if (d.propUse)        lines.push('Property Use:     '+d.propUse);
+    if (d.constructType)  lines.push('Construction:     '+d.constructType);
+    if (d.yearBuilt)      lines.push('Year Built:       '+d.yearBuilt);
+    if (d.sqft)           lines.push('Sq Footage:       '+d.sqft);
+    if (d.bedrooms)       lines.push('Bedrooms:         '+d.bedrooms);
+    if (d.bathrooms)      lines.push('Bathrooms:        '+d.bathrooms);
+    if (d.stories)        lines.push('Stories:          '+d.stories);
+    if (d.garage)         lines.push('Garage:           '+d.garage);
+    if (d.roofType)       lines.push('Roof Material:    '+d.roofType);
+    if (d.roofYear)       lines.push('Roof Year:        '+d.roofYear);
+    if (d.mortgageLender) lines.push('Mortgage Lender:  '+d.mortgageLender);
+    lines.push('','── SYSTEMS & DETAILS ───────────────');
+    if (d.electricalUpd)  lines.push('Electrical Upd:   '+d.electricalUpd+(d.electricalYear?' ('+d.electricalYear+')':''));
+    if (d.plumbingUpd)    lines.push('Plumbing Upd:     '+d.plumbingUpd+(d.plumbingYear?' ('+d.plumbingYear+')':''));
+    if (d.fireplace)      lines.push('Fireplace:        '+d.fireplace);
+    if (d.securitySys)    lines.push('Security System:  '+d.securitySys);
+    if (d.vacant)         lines.push('Vacant:           '+d.vacant);
+    if (d.roommates)      lines.push('Roommates:        '+d.roommates);
+    if (d.trampoline)     lines.push('Trampoline:       '+d.trampoline);
+    if (d.pool)           lines.push('Swimming Pool:    '+d.pool);
+    if (d.dogBreed)       lines.push('Dogs/Breed:       '+d.dogBreed);
+    if (d.bizInHome)      lines.push('Biz in Home:      '+d.bizInHome);
+    if (d.airbnb)         lines.push('Airbnb/Short-Term:'+d.airbnb);
+    if (d.floodEarthq)    lines.push('Flood/Earthquake: '+d.floodEarthq);
+    lines.push('','── CLAIMS & INSURANCE ──────────────');
+    if (d.claimsLast3)       lines.push('Claims Last 3 Yrs:'+d.claimsLast3);
+    if (d.priorLoss)         lines.push('Prior Loss:       '+d.priorLoss);
+    if (d.currentlyInsured)  lines.push('Currently Insured:'+d.currentlyInsured);
+    if (d.carrier)           lines.push('Current Carrier:  '+d.carrier);
+    if (d.insuredLen)        lines.push('How Long Insured: '+d.insuredLen);
   } else if (itype==='moto') {
     lines.push('','── MOTORCYCLE QUOTE ────────────────');
+    if (d.hearAbout)    lines.push('Heard About:   '+d.hearAbout);
+    if (d.riderDOB)     lines.push('Rider DOB:     '+d.riderDOB);
+    if (d.yearsRiding)  lines.push('Years Riding:  '+d.yearsRiding);
+    if (d.idType)       lines.push('ID Type:       '+d.idType);
+    if (d.idNum)        lines.push('ID/License #:  '+d.idNum);
+    if (d.idState)      lines.push('Issuing State: '+d.idState);
+    if (d.msf)          lines.push('MSF Course:    '+d.msf);
     lines.push('Year/Make/Model: '+[d.year,d.make,d.model].filter(Boolean).join(' '));
-    if (d.motoType) lines.push('Type: '+d.motoType);
-    if (d.coverage) lines.push('Coverage: '+d.coverage);
+    if (d.motoType)     lines.push('Type:          '+d.motoType);
+    if (d.vin)          lines.push('VIN:           '+d.vin);
+    if (d.mileage)      lines.push('Est. Mileage:  '+d.mileage);
+    if (d.coverage)     lines.push('Coverage:      '+d.coverage);
+    if (d.coverages?.length) lines.push('Add. Coverage: '+d.coverages.join(', '));
+    if (d.modifications) lines.push('Modifications: '+d.modifications);
+    if (d.modsDesc)      lines.push('Mods Detail:   '+d.modsDesc);
+    if (d.currentlyInsured) lines.push('Curr. Insured: '+d.currentlyInsured);
+    if (d.carrier)       lines.push('Carrier:       '+d.carrier);
+    if (d.insuredLen)    lines.push('How Long:      '+d.insuredLen);
   } else if (itype==='renters') {
     lines.push('','── RENTERS INSURANCE QUOTE ─────────');
-    if (d.address)   lines.push('Address: '+d.address);
-    if (d.propType)  lines.push('Type:    '+d.propType);
-    if (d.propValue) lines.push('Value:   '+d.propValue);
+    if (d.hearAbout)      lines.push('Heard About:      '+d.hearAbout);
+    if (d.dob)            lines.push('Date of Birth:    '+d.dob);
+    if (d.maritalStatus)  lines.push('Marital Status:   '+d.maritalStatus);
+    if (d.occupation)     lines.push('Occupation:       '+d.occupation);
+    if (d.occupants)      lines.push('# of Occupants:   '+d.occupants);
+    if (d.address)        lines.push('Rental Address:   '+d.address);
+    if (d.propType)       lines.push('Property Type:    '+d.propType);
+    if (d.floor)          lines.push('Floor:            '+d.floor);
+    if (d.propValue)      lines.push('Property Value:   '+d.propValue);
+    if (d.liability)      lines.push('Liability:        '+d.liability);
+    if (d.securitySys)    lines.push('Security System:  '+d.securitySys);
+    if (d.highValueItems) lines.push('High-Value Items: '+d.highValueItems);
+    if (d.hvDesc)         lines.push('HV Items Desc:    '+d.hvDesc);
+    if (d.dogs)           lines.push('Dogs/Breed:       '+d.dogs);
+    if (d.bizInHome)      lines.push('Biz in Home:      '+d.bizInHome);
+    if (d.currentlyInsured) lines.push('Curr. Insured:  '+d.currentlyInsured);
+    if (d.carrier)        lines.push('Carrier:          '+d.carrier);
+    if (d.insuredLen)     lines.push('How Long:         '+d.insuredLen);
   } else if (itype==='biz') {
     lines.push('','── BUSINESS INSURANCE QUOTE ────────');
-    if (d.bizName)     lines.push('Business: '+d.bizName);
-    if (d.bizType)     lines.push('Type:     '+d.bizType);
-    if (d.ftEmployees) lines.push('FT Emp:   '+d.ftEmployees);
-    if (d.ptEmployees) lines.push('PT Emp:   '+d.ptEmployees);
+    if (d.hearAbout)     lines.push('Heard About:      '+d.hearAbout);
+    if (d.bizName)       lines.push('Business Name:    '+d.bizName);
+    if (d.bizType)       lines.push('Business Type:    '+d.bizType);
+    if (d.ownerName)     lines.push('Owner Name:       '+d.ownerName);
+    if (d.ownership)     lines.push('Ownership %:      '+d.ownership);
+    if (d.yearsInOp)     lines.push('Years in Op:      '+d.yearsInOp);
+    if (d.expYears)      lines.push('Industry Exp:     '+d.expYears);
+    if (d.structure)     lines.push('Structure:        '+d.structure);
+    if (d.ftEmployees)   lines.push('FT Employees:     '+d.ftEmployees);
+    if (d.ptEmployees)   lines.push('PT Employees:     '+d.ptEmployees);
+    if (d.revenue)       lines.push('Annual Revenue:   '+d.revenue);
+    if (d.ein)           lines.push('EIN:              '+d.ein);
+    if (d.address)       lines.push('Business Address: '+d.address);
+    if (d.officeField)   lines.push('Office/Field:     '+d.officeField);
+    lines.push('','── RISK & HISTORY ──────────────────');
+    if (d.subcontractors) lines.push('Subcontractors:   '+d.subcontractors);
+    if (d.bankruptcy)     lines.push('Bankruptcy:       '+d.bankruptcy);
+    if (d.otherBiz)       lines.push('Other Businesses: '+d.otherBiz);
+    if (d.otherBizName)   lines.push('Other Biz Name:   '+d.otherBizName);
+    if (d.bigClaims)      lines.push('Large Claims:     '+d.bigClaims);
+    if (d.bigClaimsDesc)  lines.push('Claims Desc:      '+d.bigClaimsDesc);
+    if (d.cancelHistory)  lines.push('Cancel History:   '+d.cancelHistory);
+    if (d.cancelDesc)     lines.push('Cancel Desc:      '+d.cancelDesc);
+    if (d.outsideTX)      lines.push('Outside TX:       '+d.outsideTX);
+    if (d.govContract)    lines.push('Gov Contract:     '+d.govContract);
+    if (d.coverages?.length) {
+      lines.push('','── COVERAGES REQUESTED ─────────────');
+      lines.push('Coverages: '+d.coverages.join(', '));
+      if (d.coverages.includes('Workers Comp')) {
+        if (d.wcPayroll)        lines.push('WC Payroll:       '+d.wcPayroll);
+        if (d.wcClassification) lines.push('WC Classification:'+d.wcClassification);
+        if (d.wcEmpTypes)       lines.push('WC Emp Types:     '+d.wcEmpTypes);
+        if (d.wc1099)           lines.push('1099 Subcontract: '+d.wc1099);
+      }
+      if (d.coverages.includes('Commercial Property')) {
+        if (d.commPropOwn)      lines.push('Prop Owned/Rented:'+d.commPropOwn);
+        if (d.commPropSqft)     lines.push('Prop Sq Ft:       '+d.commPropSqft);
+        if (d.commPropYear)     lines.push('Prop Year Built:  '+d.commPropYear);
+      }
+    }
+    lines.push('','── CURRENT INSURANCE ───────────────');
+    if (d.carrier)    lines.push('Carrier:    '+d.carrier);
+    if (d.expiration) lines.push('Expiration: '+d.expiration);
+    if (d.premium)    lines.push('Premium:    '+d.premium);
   } else if (itype==='comauto') {
     lines.push('','── COMMERCIAL AUTO QUOTE ───────────');
-    if (d.bizName) lines.push('Business: '+d.bizName);
-    if (d.dotNum)  lines.push('DOT #:    '+d.dotNum);
-    if (d.radius)  lines.push('Radius:   '+d.radius);
+    if (d.hearAbout)  lines.push('Heard About:   '+d.hearAbout);
+    if (d.bizName)    lines.push('Business:      '+d.bizName);
+    if (d.industry)   lines.push('Industry:      '+d.industry);
+    if (d.dotNum)     lines.push('DOT #:         '+d.dotNum);
+    if (d.garageZIP)  lines.push('Garage ZIP:    '+d.garageZIP);
+    if (d.radius)     lines.push('Radius:        '+d.radius);
+    if (d.outsideTX)  lines.push('Outside TX:    '+d.outsideTX);
+    if (d.oilGas)     lines.push('Oil & Gas:     '+d.oilGas);
+    if (d.filings?.length) lines.push('Filings:   '+d.filings.join(', '));
+    lines.push('','── COVERAGE ────────────────────────');
+    if (d.liability)  lines.push('Liability:     '+d.liability);
+    if (d.physDamage) lines.push('Phys Damage:   '+d.physDamage);
+    if (d.cargo)      lines.push('Cargo:         '+d.cargo);
+    if (d.cargoType)  lines.push('Cargo Type:    '+d.cargoType);
+    if (d.cargoAvgVal) lines.push('Avg Val/Load:  '+d.cargoAvgVal);
+    if (d.cargoMaxVal) lines.push('Max Val/Load:  '+d.cargoMaxVal);
+    if (d.hazmat)     lines.push('Hazmat:        '+d.hazmat);
+    if (d.vehicles?.length) {
+      lines.push('','── VEHICLES ────────────────────────');
+      d.vehicles.forEach((v,i) => {
+        lines.push(`Veh ${i+1}: ${v.year} ${v.make} ${v.model}`+(v.vin?' VIN:'+v.vin:'')+(v.gvw?' GVW:'+v.gvw:'')+(v.value?' Val:'+v.value:''));
+      });
+    }
+    if (d.drivers?.length) {
+      lines.push('','── DRIVERS ─────────────────────────');
+      d.drivers.forEach((dr,i) => lines.push(`Driver ${i+1}: ${dr.name} DOB:${dr.dob||'—'} Exp:${dr.exp||'—'}yrs`));
+    }
+    lines.push('','── CURRENT INSURANCE ───────────────');
+    if (d.currentlyInsured) lines.push('Insured:    '+d.currentlyInsured);
+    if (d.carrier)    lines.push('Carrier:    '+d.carrier);
+    if (d.expiration) lines.push('Expiration: '+d.expiration);
+    if (d.premium)    lines.push('Premium:    '+d.premium);
+    if (d.cancelHistory) lines.push('Cancel Hist:'+d.cancelHistory);
   }
   if (d.agentNotes) { lines.push('','── AGENT NOTES ─────────────────────'); lines.push(d.agentNotes); }
   lines.push('','════════════════════════════════════','A licensed agent will follow up with the client.','════════════════════════════════════');
@@ -6935,7 +7540,398 @@ window.addEventListener('load', function() {
 });
 
 
+
+
+
 </script>
+
+<!-- RingCentral Config -->
+<script>
+const RC_CONFIG = {
+  clientId:     'AAhI9OSG3AzeuKtZ7rNoIh',
+  clientSecret: 'cwUTWeGVw7yfrquQKcLTl2WRkn4WjPnRyflxZ5Ux9TZY',
+  jwt:          'eyJraWQiOiI4NzYyZjU5OGQwNTk0NGRiODZiZjVjYTk3ODA0NzYwOCIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJhdWQiOiJodHRwczovL3BsYXRmb3JtLnJpbmdjZW50cmFsLmNvbS9yZXN0YXBpL29hdXRoL3Rva2VuIiwic3ViIjoiODQzODc1MDM1IiwiaXNzIjoiaHR0cHM6Ly9wbGF0Zm9ybS5yaW5nY2VudHJhbC5jb20iLCJleHAiOjM5MjA0NDQyNTAsImlhdCI6MTc3Mjk2MDYwMywianRpIjoiNGNhZmwtUUhTMVMwSDV0S2luamVzUSJ9.Uh1VEMqHPWz0CU0qhT5iftC3zJ4b1JvfJyoJ2LCmPGrJKM8lo5GXfrY72gqOmPtrJ4l7CmpPoT11sKcs2ovbQAq4C10JGy690-q0D3lWVRtlExHxaC0BIjb3Ik7JBNnuG-ERwJdXU3wROhXTHpu_un5P2cwe9duN01qbTEcob40RBCSO8hiSHjQeM_fBexTAyMBzG2RH94kOJyxgCa20w69owMGUhrJIZsQsoJn0WhTUlyV4UYwEY1U-q-y_ZKZ6fY-wROguo4YSWYheIWJ1wxpTt--Z19dJVG0ll7OpfyzyHWi3meB2bOHabcMVp7NfWSYc8_4Z6V0oUzoyjeJJ4g',
+  server:       'https://platform.ringcentral.com',
+  agents: {
+    'csaenz@safehouseins.com':    { name: 'Christian Saenz',   phone: '9152606445' },
+    'jennifer@safehouseins.com':  { name: 'Jennifer Fierro',   phone: '9157752272' },
+    'mcontreras@safehouseins.com':{ name: 'Marina Contreras',  phone: '9152638558' }
+  }
+};
+let rcAccessToken = null;
+let rcTokenExpiry = 0;
+let callsData = [];
+let callsSyncInterval = null;
+
+async function rcGetToken() {
+  if (rcAccessToken && Date.now() < rcTokenExpiry - 60000) return rcAccessToken;
+  try {
+    const resp = await fetch(RC_CONFIG.server + '/restapi/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(RC_CONFIG.clientId + ':' + RC_CONFIG.clientSecret)
+      },
+      body: 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=' + RC_CONFIG.jwt
+    });
+    if (!resp.ok) throw new Error('Token failed: ' + resp.status);
+    const data = await resp.json();
+    rcAccessToken = data.access_token;
+    rcTokenExpiry = Date.now() + (data.expires_in * 1000);
+    return rcAccessToken;
+  } catch(e) {
+    console.error('RC Token error:', e);
+    return null;
+  }
+}
+
+async function rcFetchCalls() {
+  const token = await rcGetToken();
+  if (!token) return [];
+  try {
+    const dateFrom = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const url = RC_CONFIG.server + '/restapi/v1.0/account/~/call-log?direction=Outbound&dateFrom=' + dateFrom + '&perPage=100&type=Voice';
+    const resp = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) throw new Error('Call log failed: ' + resp.status);
+    const data = await resp.json();
+    return data.records || [];
+  } catch(e) {
+    console.error('RC fetch error:', e);
+    return [];
+  }
+}
+
+function rcMapCall(rec) {
+  const agentExt = rec.from?.name || rec.from?.extensionNumber || '';
+  let agentName = agentExt;
+  // Try to match agent by extension or name
+  for (const [email, info] of Object.entries(RC_CONFIG.agents)) {
+    if (agentExt.toLowerCase().includes(info.name.split(' ')[0].toLowerCase()) ||
+        rec.from?.phoneNumber?.replace(/\D/g,'').includes(info.phone.slice(-7))) {
+      agentName = info.name;
+      break;
+    }
+  }
+  const result = (rec.result || '').toLowerCase();
+  let status = 'no_answer';
+  if (result.includes('accepted') || result.includes('answered') || (rec.duration > 10)) status = 'answered';
+  else if (result.includes('voicemail') || result.includes('voice mail')) status = 'voicemail';
+  else if (result.includes('busy')) status = 'busy';
+  else if (result.includes('no answer') || result.includes('not answered')) status = 'no_answer';
+
+  const to = rec.to?.[0]?.phoneNumber || '';
+  return {
+    id:         rec.id,
+    rcId:       rec.id,
+    datetime:   rec.startTime,
+    agentName:  agentName,
+    agentFrom:  rec.from?.phoneNumber || '',
+    clientPhone: to.replace(/[^0-9]/g,''),
+    clientPhoneFormatted: to,
+    duration:   rec.duration || 0,
+    status:     status,
+    recording:  rec.recording?.id || null,
+    recordingUri: rec.recording?.contentUri || null,
+  };
+}
+
+async function rcSyncAndSave(calls) {
+  if (!calls.length) return;
+  const allLeads = await loadAllLeads();
+  for (const call of calls) {
+    // Try to match lead by phone
+    const matched = allLeads.find(l => {
+      const lp = (l.clientPhone || '').replace(/\D/g,'');
+      const cp = call.clientPhone;
+      return lp && cp && (lp.slice(-7) === cp.slice(-7));
+    });
+    call.leadId   = matched?.id || null;
+    call.clientName = matched?.clientName || null;
+
+    // Save to Supabase calls table (upsert by rcId)
+    try {
+      await sbFetch('/rest/v1/calls', {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify({
+          id:             call.rcId,
+          phone_number:   call.clientPhone,
+          agent_name:     call.agentName,
+          call_type:      'outbound',
+          call_status:    call.status,
+          duration_seconds: call.duration,
+          call_datetime:  call.datetime,
+          ringcentral_call_id: call.rcId,
+          lead_id:        call.leadId,
+          client_name:    call.clientName,
+          recording_id:   call.recording,
+        })
+      });
+    } catch(e) {}
+
+    // Auto-update lead status if answered
+    if (call.status === 'answered' && call.leadId) {
+      try {
+        await sbFetch('/rest/v1/leads?id=eq.' + call.leadId, {
+          method: 'PATCH',
+          body: JSON.stringify({ status: 'contacted', contacted_by: call.agentName })
+        });
+        // Update in-memory
+        const lead = (await loadAllLeads()).find(l => l.id === call.leadId);
+        if (lead) lead.status = 'contacted';
+      } catch(e) {}
+    } else if ((call.status === 'no_answer' || call.status === 'voicemail' || call.status === 'busy') && call.leadId) {
+      try {
+        await sbFetch('/rest/v1/leads?id=eq.' + call.leadId + '&status=eq.new', {
+          method: 'PATCH',
+          body: JSON.stringify({ status: 'no_answer' })
+        });
+      } catch(e) {}
+    }
+  }
+}
+
+async function syncRingCentral(showMsg) {
+  const btn = document.getElementById('rcSyncBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '🔄 Syncing...'; }
+  try {
+    const raw = await rcFetchCalls();
+    const mapped = raw.map(rcMapCall);
+    await rcSyncAndSave(mapped);
+    // Also load from Supabase calls table
+    const res = await sbFetch('/rest/v1/calls?select=*&order=call_datetime.desc&limit=200', {
+      headers: { 'Prefer': 'return=representation' }
+    });
+    if (res && res.ok) {
+      callsData = await res.json();
+    } else {
+      callsData = mapped;
+    }
+    renderCallActivity();
+    if (showMsg) {
+      const el = document.getElementById('rcSyncMsg');
+      if (el) { el.textContent = '✅ Synced ' + callsData.length + ' calls'; setTimeout(()=>el.textContent='',3000); }
+    }
+  } catch(e) {
+    const el = document.getElementById('rcSyncMsg');
+    if (el) { el.textContent = '⚠️ Sync error — check console'; setTimeout(()=>el.textContent='',4000); }
+  }
+  if (btn) { btn.disabled = false; btn.textContent = '🔄 Sync RingCentral'; }
+}
+
+function fmtDuration(s) {
+  if (!s || s === 0) return '—';
+  const m = Math.floor(s/60), sec = s%60;
+  return m + ':' + String(sec).padStart(2,'0');
+}
+function fmtPhone(p) {
+  if (!p) return '—';
+  const d = p.replace(/\D/g,'');
+  if (d.length === 10) return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+  if (d.length === 11 && d[0]==='1') return `(${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`;
+  return p;
+}
+function fmtDT(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+function statusBadge(s) {
+  const map = {
+    answered:  ['cb-answered','Answered'],
+    no_answer: ['cb-noanswer','No Answer'],
+    voicemail: ['cb-voicemail','Voicemail'],
+    busy:      ['cb-busy','Busy'],
+    calling:   ['cb-calling','🔴 Calling...'],
+  };
+  const [cls, label] = map[s] || ['cb-busy', s];
+  return `<span class="ca-badge ${cls}">${label}</span>`;
+}
+
+function caDateFilterChange() {
+  const val = document.getElementById('caFilterDate')?.value;
+  const wrap = document.getElementById('caCustomDateWrap');
+  if (wrap) wrap.style.display = val === 'custom' ? 'flex' : 'none';
+  if (val !== 'custom') renderCallActivity();
+}
+
+function renderCallActivity() {
+  const isAdmin = currentEmployee?.role === 'admin';
+  const filterAgent  = document.getElementById('caFilterAgent')?.value || 'all';
+  const filterStatus = document.getElementById('caFilterStatus')?.value || 'all';
+  const filterDate   = document.getElementById('caFilterDate')?.value || 'all';
+  const searchVal    = (document.getElementById('caSearch')?.value || '').toLowerCase();
+
+  let filtered = [...callsData];
+  if (!isAdmin) filtered = filtered.filter(c => c.agent_name === currentEmployee?.name || c.agent_name?.includes(currentEmployee?.name?.split(' ')[0]));
+  if (filterAgent !== 'all') filtered = filtered.filter(c => c.agent_name === filterAgent);
+  if (filterStatus !== 'all') filtered = filtered.filter(c => c.call_status === filterStatus);
+  if (filterDate === 'today') {
+    const today = new Date().toDateString();
+    filtered = filtered.filter(c => new Date(c.call_datetime).toDateString() === today);
+  } else if (filterDate === 'yesterday') {
+    const yest = new Date(); yest.setDate(yest.getDate()-1);
+    filtered = filtered.filter(c => new Date(c.call_datetime).toDateString() === yest.toDateString());
+  } else if (filterDate === 'week') {
+    const wk = new Date(); wk.setDate(wk.getDate() - wk.getDay());wk.setHours(0,0,0,0);
+    filtered = filtered.filter(c => new Date(c.call_datetime) >= wk);
+  } else if (filterDate === 'month') {
+    const now = new Date();
+    filtered = filtered.filter(c => {
+      const d = new Date(c.call_datetime);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+  } else if (filterDate === 'last_month') {
+    const now = new Date();
+    const lm = new Date(now.getFullYear(), now.getMonth()-1, 1);
+    const lmEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+    filtered = filtered.filter(c => {
+      const d = new Date(c.call_datetime);
+      return d >= lm && d <= lmEnd;
+    });
+  } else if (filterDate === 'custom') {
+    const from = document.getElementById('caDateFrom')?.value;
+    const to   = document.getElementById('caDateTo')?.value;
+    if (from) filtered = filtered.filter(c => new Date(c.call_datetime) >= new Date(from));
+    if (to)   filtered = filtered.filter(c => new Date(c.call_datetime) <= new Date(to + 'T23:59:59'));
+  }
+  if (searchVal) filtered = filtered.filter(c =>
+    (c.client_name||'').toLowerCase().includes(searchVal) ||
+    (c.phone_number||'').includes(searchVal) ||
+    (c.agent_name||'').toLowerCase().includes(searchVal)
+  );
+
+  const total      = filtered.length;
+  const answered   = filtered.filter(c=>c.call_status==='answered').length;
+  const noAnswer   = filtered.filter(c=>c.call_status==='no_answer').length;
+  const voicemail  = filtered.filter(c=>c.call_status==='voicemail').length;
+  const rate       = total ? Math.round(answered/total*100) : 0;
+
+  // Stats
+  document.getElementById('caStat1').textContent = total;
+  document.getElementById('caStat2').textContent = answered;
+  document.getElementById('caStat3').textContent = noAnswer;
+  document.getElementById('caStat4').textContent = voicemail;
+  document.getElementById('caStat5').textContent = rate + '%';
+
+  // Table
+  let rows = '';
+  for (const c of filtered.slice(0,50)) {
+    const locked = c.call_status === 'answered';
+    const trClass = locked ? 'ca-locked-row' : '';
+    const playBtn = c.recording_id
+      ? `<button class="ca-play-btn" onclick="rcPlayRecording('${c.recording_id}')" title="Listen">▶</button>`
+      : `<button class="ca-play-btn" disabled title="No recording">—</button>`;
+    const leadInfo = c.lead_id
+      ? `<button onclick="openLeadDetail('${c.lead_id}')" style="background:none;border:none;color:#2563EB;font-weight:600;font-size:12px;cursor:pointer;padding:0;text-decoration:underline">${c.client_name || '📋 Ver lead'}</button>${locked ? ' 🔒' : ''}`
+      : `<span style="color:#D1D5DB;font-size:11px">—</span>`;
+
+    rows += `<tr class="${trClass}">
+      <td><div style="font-weight:500;font-size:11px">${fmtDT(c.call_datetime)}</div></td>
+      <td>
+        ${c.client_name ? `<div style="font-weight:600;font-size:13px;color:#111827">${c.client_name}</div>` : ''}
+        <div class="ca-mono" style="color:#374151">${fmtPhone(c.phone_number)}</div>
+      </td>
+      <td><div style="font-size:12px">${c.agent_name || '—'}</div></td>
+      <td>${statusBadge(c.call_status)}</td>
+      <td><span class="ca-mono">${fmtDuration(c.duration_seconds)}</span></td>
+      ${isAdmin ? `<td>${playBtn}</td>` : ''}
+      <td>${leadInfo}</td>
+    </tr>`;
+  }
+  document.getElementById('caTableBody').innerHTML = rows || `<tr><td colspan="7" style="text-align:center;padding:30px;color:#9CA3AF">No calls found. Click Sync to load from RingCentral.</td></tr>`;
+
+  // Render queue
+  renderCallQueue();
+  if (isAdmin) renderAgentRanking(callsData);
+}
+
+async function renderCallQueue() {
+  const allLeads = await loadAllLeads();
+  const pending = allLeads.filter(l => l.status === 'new' || l.status === 'no_answer');
+  const contacted = allLeads.filter(l => l.status === 'contacted');
+
+  const isAdmin = currentEmployee?.role === 'admin';
+  const myPending = isAdmin ? pending : pending;
+
+  let pendingHTML = '';
+  for (const l of myPending.slice(0,5)) {
+    const attempts = callsData.filter(c => c.phone_number === (l.clientPhone||'').replace(/\D/g,'')).length;
+    const lastCall = callsData.find(c => c.phone_number === (l.clientPhone||'').replace(/\D/g,''));
+    const attemptsStr = attempts ? `· ${attempts} intento${attempts>1?'s':''}` : '· Sin intentos';
+    const statusTag = l.status === 'no_answer' ? `<span style="background:#FEE2E2;color:#DC2626;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px">No Answer</span>` : `<span style="background:#DBEAFE;color:#1D4ED8;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px">Nuevo</span>`;
+    pendingHTML += `<div class="ca-priority-card">
+      <div style="width:34px;height:34px;border-radius:9px;background:${l.status==='no_answer'?'#DC2626':'#2563EB'};display:grid;place-items:center;color:#fff;font-size:14px;flex-shrink:0">${l.status==='no_answer'?'🔄':'⚡'}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:13px">${l.clientName || 'Sin nombre'} ${statusTag}</div>
+        <div style="font-size:11px;color:#6B7280;margin-top:2px">📞 ${l.clientPhone || '—'} ${attemptsStr}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="ca-btn-call" onclick="window.open('tel:${l.clientPhone}')">📞 Llamar</button>
+        <button class="ca-btn-skip" onclick="skipLead('${l.id}')">Posponer</button>
+      </div>
+    </div>`;
+  }
+  if (!pendingHTML) pendingHTML = `<div style="text-align:center;padding:20px;color:#9CA3AF;font-size:13px">🎉 ¡Todo al día! No hay pendientes.</div>`;
+
+  let lockedHTML = '';
+  for (const l of contacted.slice(0,3)) {
+    lockedHTML += `<div class="ca-locked-card">
+      <span style="font-size:16px">🔒</span>
+      <div style="flex:1">
+        <div style="color:#9CA3AF;font-size:12px;font-weight:600;text-decoration:line-through">${l.clientName || '—'}</div>
+        <div style="font-size:10px;color:#6B7280;margin-top:1px">Contactado · ${l.contactedBy || 'Agente'}</div>
+      </div>
+      <span style="background:#374151;color:#9CA3AF;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid #4B5563">Seguimiento cerrado</span>
+    </div>`;
+  }
+
+  const queueEl = document.getElementById('caQueue');
+  if (queueEl) queueEl.innerHTML = pendingHTML + (lockedHTML ? `<div class="ca-section-title">🔒 Ya contactados — No tocar</div>` + lockedHTML : '');
+}
+
+function renderAgentRanking(data) {
+  const rankEl = document.getElementById('caRanking');
+  if (!rankEl) return;
+  const agents = {};
+  for (const c of data) {
+    const n = c.agent_name || 'Unknown';
+    if (!agents[n]) agents[n] = { total:0, answered:0 };
+    agents[n].total++;
+    if (c.call_status === 'answered') agents[n].answered++;
+  }
+  const sorted = Object.entries(agents).sort((a,b) => (b[1].answered/Math.max(b[1].total,1)) - (a[1].answered/Math.max(a[1].total,1)));
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const colors = ['#16A34A','#2563EB','#7C3AED','#CA8A04','#6B7280'];
+  let html = '';
+  sorted.forEach(([name, s], i) => {
+    const rate = s.total ? Math.round(s.answered/s.total*100) : 0;
+    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    html += `<div class="ca-rank-row">
+      <span style="font-size:16px;width:22px">${medals[i]||'·'}</span>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:12px">${name} <span style="color:#9CA3AF;font-size:10px">· ${s.total} calls</span></div>
+        <div class="ca-bar"><div class="ca-bar-fill" style="width:${rate}%;background:${colors[i]||'#6B7280'}"></div></div>
+      </div>
+      <span style="font-size:13px;font-weight:800;color:${colors[i]||'#6B7280'};min-width:36px;text-align:right">${rate}%</span>
+    </div>`;
+  });
+  rankEl.innerHTML = html || '<div style="color:#9CA3AF;font-size:12px;padding:10px">No data yet</div>';
+}
+
+async function rcPlayRecording(recordingId) {
+  const token = await rcGetToken();
+  if (!token) { alert('No se pudo obtener acceso a grabaciones.'); return; }
+  const url = RC_CONFIG.server + '/restapi/v1.0/account/~/recording/' + recordingId + '/content';
+  window.open(url + '?access_token=' + token, '_blank');
+}
+
+function skipLead(leadId) {
+  // Just re-render — future: add snooze
+  renderCallActivity();
+}
+</script>
+
 
 <!-- ══ ADMIN SCRIPT EDITOR MODAL ══ -->
 <div id="scriptEditorModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.40);backdrop-filter:blur(4px);z-index:10000;align-items:center;justify-content:center;padding:16px;">
